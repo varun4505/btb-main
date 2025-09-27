@@ -1,0 +1,4 @@
+# Simple requirements for workshop
+streamlit
+google-generativeai
+python-dotenv
