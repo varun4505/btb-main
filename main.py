@@ -11,6 +11,26 @@ st.set_page_config(
     layout="centered",
 )
 
+st.markdown(
+    """
+    <div style="padding: 1rem; border-radius: 10px; border: 2px solid #ff9800; background-color: #fff3e0; margin-bottom: 1rem;">
+        <h3 style="margin:0;">🔑 API Key Required</h3>
+        <p style="margin:0;">Please add your <code>GEMINI_API_KEY</code> (preferred) or <code>GOOGLE_API_KEY</code> in a <code>.env</code> file before using this app.</p>
+        <p style="margin:0;">Example: <code>GEMINI_API_KEY=your_api_key_here</code></p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+load_dotenv()
+
+# Be flexible: support both GEMINI_API_KEY and GOOGLE_API_KEY
+API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+if not API_KEY:
+    st.error("❌ Missing API key. Please add GEMINI_API_KEY (preferred) or GOOGLE_API_KEY to your .env file and restart the app.")
+    st.stop()
+
+
 load_dotenv()
 
 # Be flexible: support both GEMINI_API_KEY and GOOGLE_API_KEY
