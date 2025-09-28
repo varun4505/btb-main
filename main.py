@@ -4,6 +4,7 @@ import streamlit as st
 import google.generativeai as genai
 from dotenv import load_dotenv
 
+
 # ---------- App & Model Setup ----------
 st.set_page_config(
     page_title="AI Recipe Generator",
@@ -11,16 +12,23 @@ st.set_page_config(
     layout="centered",
 )
 
-st.markdown(
-    """
-    <div style="padding: 1rem; border-radius: 10px; border: 2px solid #ff9800; background-color: #fff3e0; margin-bottom: 1rem;">
-        <h3 style="margin:0;">🔑 API Key Required</h3>
-        <p style="margin:0;">Please add your <code>GEMINI_API_KEY</code> (preferred) or <code>GOOGLE_API_KEY</code> in a <code>.env</code> file before using this app.</p>
-        <p style="margin:0;">Example: <code>GEMINI_API_KEY=your_api_key_here</code></p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+load_dotenv()
+
+# First try to get from env, otherwise ask user
+API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+
+if not API_KEY:
+    st.warning("🔑 Please enter your API key to continue.")
+    API_KEY = st.text_input("Enter your Gemini API Key:", type="password")
+
+if not API_KEY:
+    st.stop()
+
+# Configure model
+import google.generativeai as genai
+genai.configure(api_key=API_KEY)
+model = genai.GenerativeModel("gemini-2.5-flash")
+
 
 load_dotenv()
 
